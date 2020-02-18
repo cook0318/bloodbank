@@ -9,15 +9,12 @@ namespace bloodbank
     class BloodBank
     {
         static void Main(string[] args)
-        {
-
+        { 
             int id = 1;
             List<int> IdList = new List<int>();
             IdList.Add(0);
             string[] types = new string[] { "O+", "O-", "B-", "B+", "A+", "A-", "AB+", "AB-" };
             List<Donor> donors = new List<Donor>();
-
-
 
             void AddUser()
             {
@@ -332,16 +329,9 @@ namespace bloodbank
                     Console.Clear();
                     UpdateUser();
                 }
-                
-                
-
-
-
-
-
 
                 /** TO ADD
-                if searching, how will you be searching like by name, age, etc
+                simplify how searching happens
                 more checks for wrong things. like if name has #, or phone isn't right. So the program can't break
                 options to back at any point
                 **/
