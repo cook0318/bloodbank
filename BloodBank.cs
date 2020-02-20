@@ -25,40 +25,54 @@ namespace bloodbank
                 Console.Clear();
                 while (!done)
                 {
-                Begin:
-                    Console.WriteLine("Enter new Users name, or enter nothing to finish.");
-                    string userInputName = Console.ReadLine();
-                    if (userInputName == "")
+                int userInputAge;
+                long userInputPhone;
+                Console.WriteLine("Enter new Users name, or enter nothing to finish.");
+                string userInputName = Console.ReadLine();
+                if (userInputName == "")
+                {
+                    done = true;
+                }
+                else
+                {
+                    Console.WriteLine("Enter users age.");
+                    Age:
+                    try
                     {
-                        done = true;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Enter users age.");
-                        int userInputAge = int.Parse(Console.ReadLine());
+                        userInputAge = int.Parse(Console.ReadLine());
                         if (userInputAge < 18)
                         {
-                            Console.WriteLine("User must be 18 or older.");
+                            Console.WriteLine("User must be 18 or older. ");
                             Thread.Sleep(2000);
                             Console.Clear();
-                            goto Begin;
+                            goto Age;
                         }
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Please enter a valid age.");
+                        goto Age;
+                        }
+                    Console.WriteLine("Enter new Users blood type.");
                     Blood:
-                        Console.WriteLine("Enter new Users blood type.");
                         string userInputBloodType = (Console.ReadLine()).ToUpper();
-                        if (types.Contains(userInputBloodType))
-                        {
-                        }
-                        else
+                        if (!(types.Contains(userInputBloodType)))
                         {
                             Console.WriteLine("Invalid blood type entered. Please enter correct blood type.");
                             Thread.Sleep(2000);
-                            Console.Clear();
                             goto Blood;
                         }
-                        Console.WriteLine("Enter users phone number.");
-                        long userInputPhone = long.Parse(Console.ReadLine());
-
+                        Console.WriteLine("Enter users phone number (no dashes/spaces).");
+                        Phone:
+                        try
+                        {
+                            userInputPhone = long.Parse(Console.ReadLine());
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("Please enter a valid phone number.");
+                            goto Phone;
+                        }
 
 
                         Donor donor = new Donor(userInputName, userInputAge, userInputBloodType, userInputPhone, id);
@@ -89,107 +103,142 @@ namespace bloodbank
                 {
                     parameterName = "phone number";
                 }
-                StartSearch:
+            StartSearch:
                 Console.WriteLine("Please enter the " + parameterName + " you would like to see details for. Enter 0 when finished viewing results.");
-                if (parameterName == "name")
+                string userInput = Console.ReadLine();
+                bool done = false;
+                while (!done)
                 {
-                    string userPersonChoice = Console.ReadLine();
-                    foreach (Donor person in donors)
+                    if (userInput == "0")
                     {
-                        if (person.name == userPersonChoice)
-                        {
-                            Console.WriteLine("User name: " + person.name);
-                            Console.WriteLine("User age: " + person.age);
-                            Console.WriteLine("User Blood Type: " + person.bloodType);
-                            Console.WriteLine("User Phone Number: " + person.phoneNumber);
-                            Console.WriteLine("User ID: " + person.id + "\n");
-                            invalid = false;
-                        }
-                    }
-                    if (invalid == true)
-                    {
-                        Console.WriteLine("No users with that name found.");
-                        goto StartSearch;
-                    }
-                }
-
-                if (parameterName == "age")
-                {
-                    int userPersonAge = int.Parse(Console.ReadLine());
-                    foreach (Donor person in donors)
-                    {
-                        if (person.age == userPersonAge)
-                        {
-                            Console.WriteLine("User name: " + person.name);
-                            Console.WriteLine("User age: " + person.age);
-                            Console.WriteLine("User Blood Type: " + person.bloodType);
-                            Console.WriteLine("User Phone Number: " + person.phoneNumber);
-                            Console.WriteLine("User ID: " + person.id + "\n");
-                            invalid = false;
-                        }
-                    }
-                    if (invalid == true)
-                    {
-                        Console.WriteLine("No users with that age found.");
-                        goto StartSearch;
-                    }
-                }
-
-
-                if (parameterName == "blood type")
-                {
-                    string userPersonBloodType = (Console.ReadLine()).ToUpper();
-                    foreach (Donor person in donors)
-                    {
-                        if (person.bloodType == userPersonBloodType)
-                        {
-                            Console.WriteLine("User name: " + person.name);
-                            Console.WriteLine("User age: " + person.age);
-                            Console.WriteLine("User Blood Type: " + person.bloodType);
-                            Console.WriteLine("User Phone Number: " + person.phoneNumber);
-                            Console.WriteLine("User ID: " + person.id + "\n");
-                            invalid = false;
-                        }
-                    }
-                    if (invalid == true)
-                    {
-                        Console.WriteLine("No users with that blood type found.");
-                        goto StartSearch;
-                    }
-                }
-
-                if (parameterName == "phone number")
-                {
-                    long userPersonPhoneNumber = long.Parse(Console.ReadLine());
-                    foreach (Donor person in donors)
-                    {
-                        if (person.phoneNumber == userPersonPhoneNumber)
-                        {
-                            Console.WriteLine("User name: " + person.name);
-                            Console.WriteLine("User age: " + person.age);
-                            Console.WriteLine("User Blood Type: " + person.bloodType);
-                            Console.WriteLine("User Phone Number: " + person.phoneNumber);
-                            Console.WriteLine("User ID: " + person.id + "\n");
-                            invalid = false;
-                        }
-                    }
-                    if (invalid == true)
-                    {
-                        Console.WriteLine("No users with that phone number found.");
-                        goto StartSearch;
-                    }
-                }
-
-
-
-
-                bool run = true;
-                while (run && !invalid)
-                {
-                    if (int.Parse(Console.ReadLine()) == 0)
-                    {
+                        done = true;
                         break;
                     }
+                    else
+                    {
+                        if (parameterName == "name")
+                        {
+                            foreach (Donor person in donors)
+                            {
+                                if (person.name == userInput)
+                                {
+                                    Console.WriteLine("User name: " + person.name);
+                                    Console.WriteLine("User age: " + person.age);
+                                    Console.WriteLine("User Blood Type: " + person.bloodType);
+                                    Console.WriteLine("User Phone Number: " + person.phoneNumber);
+                                    Console.WriteLine("User ID: " + person.id + "\n");
+                                    invalid = false;
+                                }
+                            }
+                            if (invalid == true)
+                            {
+                                Console.WriteLine("No users with that name found.");
+                                goto StartSearch;
+                            }
+                            bool run = true;
+                            while (run && !invalid)
+                            {
+                                if (int.Parse(Console.ReadLine()) == 0)
+                                {
+                                    break;
+                                }
+                            }
+                            done = true;
+                        }
+
+                        if (parameterName == "age")
+                        {
+                            foreach (Donor person in donors)
+                            {
+                                if (person.age == int.Parse(userInput))
+                                {
+                                    Console.WriteLine("User name: " + person.name);
+                                    Console.WriteLine("User age: " + person.age);
+                                    Console.WriteLine("User Blood Type: " + person.bloodType);
+                                    Console.WriteLine("User Phone Number: " + person.phoneNumber);
+                                    Console.WriteLine("User ID: " + person.id + "\n");
+                                    invalid = false;
+                                }
+                            }
+                            if (invalid == true)
+                            {
+                                Console.WriteLine("No users with that age found.");
+                                goto StartSearch;
+                            }
+                            bool run = true;
+                            while (run && !invalid)
+                            {
+                                if (int.Parse(Console.ReadLine()) == 0)
+                                {
+                                    break;
+                                }
+                            }
+                            done = true;
+                        }
+
+
+                        if (parameterName == "blood type")
+                        {
+                            foreach (Donor person in donors)
+                            {
+                                if (person.bloodType == userInput.ToUpper())
+                                {
+                                    Console.WriteLine("User name: " + person.name);
+                                    Console.WriteLine("User age: " + person.age);
+                                    Console.WriteLine("User Blood Type: " + person.bloodType);
+                                    Console.WriteLine("User Phone Number: " + person.phoneNumber);
+                                    Console.WriteLine("User ID: " + person.id + "\n");
+                                    invalid = false;
+                                }
+                            }
+                            if (invalid == true)
+                            {
+                                Console.WriteLine("No users with that blood type found.");
+                                goto StartSearch;
+                            }
+                            bool run = true;
+                            while (run && !invalid)
+                            {
+                                if (int.Parse(Console.ReadLine()) == 0)
+                                {
+                                    break;
+                                }
+                            }
+                            done = true;
+                        }
+
+                        if (parameterName == "phone number")
+                        {
+                            foreach (Donor person in donors)
+                            {
+                                if (person.phoneNumber == long.Parse(userInput))
+                                {
+                                    Console.WriteLine("User name: " + person.name);
+                                    Console.WriteLine("User age: " + person.age);
+                                    Console.WriteLine("User Blood Type: " + person.bloodType);
+                                    Console.WriteLine("User Phone Number: " + person.phoneNumber);
+                                    Console.WriteLine("User ID: " + person.id + "\n");
+                                    invalid = false;
+                                }
+                            }
+                            if (invalid == true)
+                            {
+                                Console.WriteLine("No users with that phone number found.");
+                                goto StartSearch;
+                            }
+                            bool run = true;
+                            while (run && !invalid)
+                            {
+                                if (int.Parse(Console.ReadLine()) == 0)
+                                {
+                                    break;
+                                }
+                            }
+                            done = true;
+                        }
+                    }
+
+
                 }
             }
 
@@ -293,43 +342,114 @@ namespace bloodbank
                 }
             }
 
+            void DeleteUser()
+            {
+            Delete:
+                Console.WriteLine("Please enter ID of user you would like to delete. Enter 0 to return to main menu.");
+                try
+                {
+                    int userInputID = int.Parse(Console.ReadLine());
+                    if (userInputID != 0)
+                    {
+                        Donor todelete = new Donor("Name", 1000, "O-", 555, -1);
+                        bool exists = false;
+                        foreach (Donor person in donors)
+                        {
+                            if (person.id == userInputID)
+                            {
+                                todelete = person;
+                                exists = true;
+                                break;
+                            }
+                        }
+                        if (exists)
+                        {
+                            Console.WriteLine("Please confirm you would like to delete the following user: ");
+                            Console.WriteLine("User name: " + todelete.name);
+                            Console.WriteLine("User age: " + todelete.age);
+                            Console.WriteLine("User Blood Type: " + todelete.bloodType);
+                            Console.WriteLine("User Phone Number: " + todelete.phoneNumber);
+                            Console.WriteLine("User ID: " + todelete.id + "\n");
+
+                            Console.WriteLine("Please type and enter 'delete' to remove user. Type '0' to keep the user return to the main menu.");
+                            string userChoice = (Console.ReadLine()).ToLower();
+                            if (userChoice == "delete")
+                            {
+                                donors.Remove(todelete);
+                                Console.WriteLine("User deleted. Returning to main menu.");
+                                Thread.Sleep(2000);
+                                Console.Clear();
+                            }
+                            else if (userChoice == "0")
+                            {
+                                Console.WriteLine("User not deleted. Returning to main menu.");
+                                Thread.Sleep(2000);
+                                Console.Clear();
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("No user with that ID found. Please enter a valid ID.");
+                            goto Delete;
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Invalid entry.");
+                    goto Delete;
+                }
+            }
             bool run = true;
             while (run)
             {
                 Console.Clear();
+                Search:
                 Console.WriteLine("What would you like to do? Type the number associated with your choice. ");
                 Thread.Sleep(400);
-                Console.WriteLine("Add New User: '1' \nSearch for User: '2' \nUpdate User's info: '3' ");
-                int userChoice = int.Parse(Console.ReadLine());
-                if (userChoice == 1)
+                Console.WriteLine("Add New User: '1' \nSearch for User: '2' \nUpdate User's info: '3'  \nDelete User: '4'");
+                try
                 {
-                    Console.Clear();
-                    AddUser();
-                }
-                else if (userChoice == 2)
-                {
-                    Console.Clear();
-                    MetricSearch:
-                    Console.WriteLine("What metric would you like to search by?\nName: '1'\nAge: '2'\nBlood Type: '3'\nPhone Number: '4'");
-                    int userSearchChoice = int.Parse(Console.ReadLine());
-                    if (userSearchChoice == 1 || userSearchChoice == 2 || userSearchChoice == 3 || userSearchChoice == 4)
-                    { 
-                    } 
-                    else
+                    int userChoice = int.Parse(Console.ReadLine());
+                    if (userChoice == 1)
                     {
-                        Console.WriteLine("Please enter a correct value to search by.");
-
-                        goto MetricSearch;
+                        Console.Clear();
+                        AddUser();
                     }
-                    Console.Clear();
-                    SearchUser(userSearchChoice);
-                } 
-                else if (userChoice == 3)
-                {
-                    Console.Clear();
-                    UpdateUser();
+                    else if (userChoice == 2)
+                    {
+                        Console.Clear();
+                    MetricSearch:
+                        Console.WriteLine("What metric would you like to search by?\nName: '1'\nAge: '2'\nBlood Type: '3'\nPhone Number: '4'");
+                        int userSearchChoice = int.Parse(Console.ReadLine());
+                        if (userSearchChoice == 1 || userSearchChoice == 2 || userSearchChoice == 3 || userSearchChoice == 4)
+                        {
+                            SearchUser(userSearchChoice);
+                            Console.Clear();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please enter a correct value to search by.");
+                            goto MetricSearch;
+                        }
+                    }
+                    else if (userChoice == 3)
+                    {
+                        Console.Clear();
+                        UpdateUser();
+                    }
+                    else if(userChoice == 4)
+                    {
+                        Console.Clear();
+                        DeleteUser();
+                    }
                 }
-
+                catch (Exception)
+                {
+                    Console.WriteLine("Please enter a valid choice.");
+                    Thread.Sleep(800);
+                    goto Search;
+                }
                 /** TO ADD
                 simplify how searching happens
                 more checks for wrong things. like if name has #, or phone isn't right. So the program can't break
